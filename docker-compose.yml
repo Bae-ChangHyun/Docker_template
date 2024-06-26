@@ -1,0 +1,68 @@
+version: '3'
+
+services:
+  redhat:
+    build: .
+    container_name: redhat_server
+    ports:
+      - "22:22"
+    volumes:
+      - C:/Users/matth/OneDrive - GCSC/GCSC/프로젝트:/mnt    # mount project dir >> {local_dir}:{container_dir}
+      - C:/Users/matth/pgdata:/var/lib/postgresql/data      # mount postgresql data dir >> {local_dir}:{container_dir}
+    environment:
+      POSTGRES_HOST: postgres                               
+      POSTGRES_DB: bch                                      # set db name
+      POSTGRES_USER: bch                                    # set db user
+      POSTGRES_PASSWORD: chbae0624@                         # set db password
+    depends_on:
+      - postgres 
+    networks:
+      - mynetwork
+
+# psql -h postgres -U bch
+  postgres:
+    image: postgres:latest
+    container_name: postgres_db
+    environment:
+      POSTGRES_DB: bch                                      # set db name
+      POSTGRES_USER: bch                                    # set db user
+      POSTGRES_PASSWORD: chbae0624@                         # set db password
+    volumes:
+      - C:/Users/matth/pgdata:/var/lib/postgresql/data      # postgresql data dir >> {local_dir}:{container_dir}
+    ports:
+      - "5432:5432"
+    restart: always
+    networks:
+      - mynetwork
+
+# redis-cli -h redis
+  redis:
+    image: redis:latest
+    container_name: redis_db
+    ports:
+      - "6379:6379"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+    restart: always
+    networks:
+      - mynetwork
+
+# localhost:8080/pgadmin4
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: gcai001127@gmail.com          # set pgadmin4 email
+      PGADMIN_DEFAULT_PASSWORD: gcai123!                    # set pgadmin4 pw  
+    ports:
+      - "8080:80"
+    depends_on:
+      - postgres
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
