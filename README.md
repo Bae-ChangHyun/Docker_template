@@ -10,7 +10,9 @@
 - 2. Upload Linux folder on Server and change directory name
 - 3. Enter changed directory
 - 4. Edit Dokerfile
-    - 4-1. Change SSH port number(bch:22)
+    - 4-1. Change SSH port number{
+        // already used 
+        bch:22, shw:23, ksh: 24}
 - 5. Edit docker-compose.yaml
     - 5-1. Change all container_name >> [default: redhat_bch, postgres_bch, redis_bch, pgadmin4_bch, zookeeper_bch, kafka_bch] 
     - 5.2. Change "redhat" volumes to personal project folder >> [default: /home/bch/Project/ai_source(original):/mnt] -> [yours: {personal_project_folder}:/mnt] 
@@ -38,19 +40,20 @@ docker stop $(docker ps -a -q) # 컨테이너 모두 종료
 docker rm $(docker ps -aq) 
 docker rmi $(docker images -q)
 docker volume rm $(docker volumne ls -q)
+docker exec -it {container_name} /bin/bash # postgresql 컨테이너는 /bin/sh
 ```
 
 # Utils
-- vscode: Dev Containers
+- Vscode: Dev Containers
 
 # Check
 - Postgres
-: redhat 컨테이너에 접속하여 터미널을 열고 `psql -h postgres -U mdaai -d mdadb2` 입력후 pw `mda8932!`입력하여 접속되는지 확인후 `\q`로 종료
+ : redhat 컨테이너에 접속하여 터미널을 열고 `psql -h postgres -U mdaai -d mdadb2` 입력후 pw=`mda8932!`입력하여 접속되는지 확인후 `\q`로 종료
 - redhat
-: redhat 컨테이너에 접속하여 터미널을 열고 `redis-cli -h redis`입력하여 접속확인후 `exit`로 종료
+ : redhat 컨테이너에 접속하여 터미널을 열고 `redis-cli -h redis`입력하여 접속확인후 `exit`로 종료
 - pgadmin4
-: chrome을 열고 `{서버ip}:{docker-compose pgadmin4 port}`에 접속하여 id,pw 입력후 서버 등록시 host ip: postgres 
+ : chrome을 열고 `118.38.20.101:{pgadmin4_port}`에 접속
+ : pgadmin4 `id:gcai123@gmail.com` / `pw:gcai123!` 입력하여 접속
+ : 서버 등록시 hostip=`postgres`, maindb=`mdadb2`, user=`mdaai`, pw=`mda8932!`  
 - mount
-: redhat 컨테이너에서 자신의 프로젝트 폴더에 정상적으로 접속되는지 확인
-
-
+ : redhat 컨테이너 `/mnt`경로에 자신이 마운트한 프로젝트 폴더에 정상적으로 접속되는지 확인
