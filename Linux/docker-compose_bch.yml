@@ -2,8 +2,9 @@ version: '3'
 
 services:
   redhat:
-    build: 
-      dockerfile:Dockerfile.bch
+    build:
+      context: . 
+      dockerfile: Dockerfile.bch
     container_name: redhat_bch
     ports:
       - "22:22"

@@ -3,6 +3,7 @@ version: '3'
 services:
   redhat:
     build: 
+      context: .
       dockerfile: Dockerfile.shw
     container_name: redhat_shw
     ports:
