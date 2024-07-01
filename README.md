@@ -1,7 +1,7 @@
 # Quick Start
 - 1. Copy Linux folder and Upload to server
 - 2. Change dir name
-- 3. `docker-compose -f docker-compose_{name}.yml up`
+- 3. `docker-compose -f docker-compose_{name}.yml up --build`
 - 4. [check](#check)
 
 # Necessary Setting
@@ -45,7 +45,7 @@ docker volume rm $(docker volumne ls -q)
 
 # Check
 - Postgres
-: redhat 컨테이너에 접속하여 터미널을 열고 `psql -h postgres -U mdaai -d mdadb2` 입력후 pw `chbae0624`입력하여 접속되는지 확인후 `\q`로 종료
+: redhat 컨테이너에 접속하여 터미널을 열고 `psql -h postgres -U mdaai -d mdadb2` 입력후 pw `mda8932!`입력하여 접속되는지 확인후 `\q`로 종료
 - redhat
 : redhat 컨테이너에 접속하여 터미널을 열고 `redis-cli -h redis`입력하여 접속확인후 `exit`로 종료
 - pgadmin4
