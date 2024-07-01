@@ -2,7 +2,8 @@ version: '3'
 
 services:
   redhat:
-    build: Dockerfile.shw
+    build: 
+      dockerfile: Dockerfile.shw
     container_name: redhat_shw
     ports:
       - "23:22"

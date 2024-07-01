@@ -2,7 +2,8 @@ version: '3'
 
 services:
   redhat:
-    build: Dockerfile.bch
+    build: 
+      dockerfile:Dockerfile.bch
     container_name: redhat_bch
     ports:
       - "22:22"
@@ -39,7 +40,7 @@ services:
     volumes:
       - /mnt/raid/pgdata/main:/var/lib/postgresql/data      # mount postgresql data dir >> {local_dir}:{container_dir}
     ports:
-      - "5343:5432"
+      - "5343:5432" 
     restart: always
     networks:
       - mynetwork
