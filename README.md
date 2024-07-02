@@ -40,6 +40,7 @@ docker-compose restart    # 모든 컨테이너 재기동동
 docker-compose down -v    # 올려진 컨테이너 내리면서 볼륨 삭제
 docker ps                 # 실행중인 컨테이너 리스트
 docker ps -a              # 종료된 컨테이너까지 모두 리스트
+docker images             # 모든 이미지 확인인
 
 docker start {container_name1} {container_name2} ..
 docker stop {container_name or id} # 특정 컨테이너 종료
