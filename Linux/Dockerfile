@@ -56,8 +56,4 @@ RUN mkdir /var/run/sshd && \
     echo 'root:Docker!' | chpasswd && \
     ssh-keygen -A
 
-# Expose SSH port
-EXPOSE 23
-
-# Start SSH service
-CMD ["/usr/sbin/sshd", "-D"]
+CMD ["tail", "-f", "/dev/null"]

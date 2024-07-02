@@ -4,7 +4,8 @@ services:
   redhat:
     build:
       context: . 
-      dockerfile: Dockerfile.bch
+      dockerfile: Dockerfile
+    image: gc_redhat
     container_name: redhat_bch
     ports:
       - "22:22"
