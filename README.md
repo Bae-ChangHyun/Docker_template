@@ -5,6 +5,7 @@
 4. [check](#check)
 
 # Necessary Setting
+// not for Quick Start User
 1. Copy Linux folder
 2. Upload Linux folder on Server and change directory name
 3. Enter changed directory
