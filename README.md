@@ -1,34 +1,32 @@
 # Quick Start
-1. Copy Linux folder and Upload to server
-2. Change dir name
-3. `docker-compose -f docker-compose_{name}.yml up --build`
-4. [check](#check)
+1. Copy `Linux/{USERNAME}_docker` folder and Upload to server
+2. `docker-compose -f docker-compose_{name}.yml up`
+3. [check](#check)
 
 # Necessary Setting
 // not for Quick Start User
-1. Copy Linux folder
-2. Upload Linux folder on Server and change directory name
-3. Enter changed directory
-4. Edit Dokerfile
+1. Copy `Linux/{USERNAME}_docker` folder and Upload to server
+2. Enter changed directory
+3. Edit Dokerfile
     - Change SSH port number
     ```
     { bch:22, shw:23, ksh: 24}
     ```
-5. Edit docker-compose.yaml
+4. Edit docker-compose.yaml
     - Change all container_name >> [default: redhat_bch, postgres_bch, redis_bch, pgadmin4_bch, zookeeper_bch, kafka_bch] 
     - Change "redhat" volumes to personal project folder <br>`[default: /home/bch/Project/ai_source(original):/mnt] -> [yours: {personal_project_folder}:/mnt]`
     - Change front port number
         ```bash
-        bch: [redhat=22,redhat=9022,postgres=5343,redis=6380,pgadmin4=8080,zookeeper=2182,kafka=9093]
-        shw: [redhat=23,redhat=9023,postgres=5344,redis=6381,pgadmin4=8081,zookeeper=2183,kafka=9094]
-        ksh: [redhat=24,redhat=9025,postgres=5345,redis=6382,pgadmin4=8082,zookeeper=2184,kafka=9095]```
+        bch: [redhat=`22`,redhat=`9022`,postgres=`5343`,redis=`6380`,pgadmin4=`8080`,zookeeper=`2182`,kafka=`9093`]
+        shw: [redhat=`23`,redhat=`9023`,postgres=`5344`,redis=`6381`,pgadmin4=`8081`,zookeeper=`2183`,kafka=`9094`]
+        ksh: [redhat=`24`,redhat=`9025`,postgres=`5345`,redis=`6382`,pgadmin4=`8082`,zookeeper=`2184`,kafka=`9095`]```
     - Change "kafka" environment
         - KAFKA_LISTENERS -> PLAINTEXT_HOST://0.0.0.0:{your_port}
         - KAFKA_ADVERTISED_LISTENERS -> PLAINTEXT_HOST://localhost:{your_port}
 # Useful Docker command
 ```bash
-cd {personal_dir}
-docker-compose -f {composefilename}.yml up --build # 처음 실행시 image build 및 컨테이너 실행
+cd {USERNAME}_docker
+docker-compose -f {composefilename}.yml up --build # 처음 실행시 image build 및 컨테이너 실행(bch유저만 --build옵션 추가. 나머진 X)
 docker ps -a                                       # 종료포함 모든 컨테이너 리스트
 docker stop {cotainer_id1} {cotainer_id2} ..       # 특정 컨테이너 종료
 docker rm {cotainer_id1} {cotainer_id2} ..         # 특정 컨테이너 삭제
@@ -40,7 +38,7 @@ docker volume prune                                # 컨테이너에서 사용�
 # ALL Docker command
 ```bash
 cd {dir}
-docker-compose -f {composefilename}.yml up # 특정 yml파일을 이용하여 컨테이너 생성
+docker-compose -f docker_compose_{USERNAME}.yml up # 특정 yml파일을 이용하여 컨테이너 생성
 docker-compose up         # docker-compose.yml파일 이용하여 컨테이너 생성 및 실행
 docker-compose up --build # 처음 실행시 image build 및 컨테이너 실행
 docker-compose up         # 여러개의 docker 컨테이너 올림
@@ -93,8 +91,15 @@ docker exec -it {container_name} /bin/bash # postgresql 컨테이너는 /bin/sh
  - 2024/07/02
  : DELETE personal Dockfile(`Dockerfile.bch`,`Dockerfile.shw`,`Dockerfile.ksh`)
    >> redhat image 생성의 중복을 막기 위해서(개당 8GB)
- : CHAHNGE Dockerfile contents 
+ : CHANGE Dockerfile contents 
    >> remove ssh connection & add CMD command (불필요한 ssh 삭제 및 컨테이너 유지)
  : CHANGE redhat image_name
    >> redhat 이미지 이름을 gc_redhat으로 지정하여 하나의 이미지만 유지하도록 설정
-   summary: 중복사용되는 redhat image 파일 생성을 방지하기 위한 commit. (결과적으로 16GB 보존됨)   
+  summary: 중복사용되는 redhat image 파일 생성을 방지하기 위한 commit. (결과적으로 16GB 보존됨)   
+
+ - 2024/07/02(2)
+ : CREATE personal directory(`bch_docker`,`ksh_docker`,`shw_docker`)
+   >> 개인 폴더만 복사하여 서버에 업로드하고 폴더 내에서 실행하면 됨.
+ : DELETE Dockerfile
+   >> bch 유저만 최초실행시 Dockerfile로 `gc_redhat`이미지 생성하고, 나머지는 compose로 image 받아오기만 함
+  

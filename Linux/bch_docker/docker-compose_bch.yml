@@ -82,12 +82,12 @@ services:
       - "2182:2181"
     networks:
       - mynetwork
-
+      
   kafka:
     image: wurstmeister/kafka:latest
-    container_name: kafka_bch
+    container_name: kafka_ksh
     ports:
-      - "9093:9092"
+      - "9095:9092"
     environment:
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,PLAINTEXT_HOST://0.0.0.0:9093
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:9093
