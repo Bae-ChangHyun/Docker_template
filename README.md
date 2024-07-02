@@ -20,7 +20,7 @@
         ```bash
         bch: [redhat=22,redhat=9022,postgres=5343,redis=6380,pgadmin4=8080,zookeeper=2182,kafka=9093]
         shw: [redhat=23,redhat=9023,postgres=5344,redis=6381,pgadmin4=8081,zookeeper=2183,kafka=9094]
-        ksh: [redhat=24,redhat=9024,postgres=5345,redis=6382,pgadmin4=8082,zookeeper=2184,kafka=9095]```
+        ksh: [redhat=24,redhat=9025,postgres=5345,redis=6382,pgadmin4=8082,zookeeper=2184,kafka=9095]```
     - Change "kafka" environment
         - KAFKA_LISTENERS -> PLAINTEXT_HOST://0.0.0.0:{your_port}
         - KAFKA_ADVERTISED_LISTENERS -> PLAINTEXT_HOST://localhost:{your_port}
@@ -40,6 +40,7 @@ docker rm $(docker ps -aq)
 docker rmi $(docker images -q)
 docker volume rm $(docker volumne ls -q)
 docker exec -it {container_name} /bin/bash # postgresql 컨테이너는 /bin/sh
+docker start {container_name1} {container_name2} ..
 ```
 
 # Utils
