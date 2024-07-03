@@ -78,8 +78,9 @@ docker exec -it {container_name} /bin/bash # postgresql 컨테이너는 /bin/sh
 - redhat <br>
  : redhat container bash에서서 `redis-cli -h redis`로 접속확인 후 `exit`로 종료
 - pgadmin4 <br>
- : 주소창에 `118.38.20.101:{pgadmin4_port}`에 접속 <br>
- : pgadmin4 `id:gcai123@gmail.com` / `pw:gcai123!` 입력하여 접속 <br>
+ : 주소창에 `118.38.20.101:8080`에 접속 <br>
+ (!8080이 안열려있다면, 8081 혹은 8082 --> 같은 db를 공유중이라 여러 포트에서 동시접속 불가)
+ : pgadmin4 `id:gcai001127@gmail.com` / `pw:gcai123!` 입력하여 접속 <br>
  : 서버 등록시 hostip=`postgres`, maindb=`mdadb2`, user=`mdaai`, pw=`mda8932!`  
 - mount <br>
  : redhat container `/mnt`에 자신이 마운트한 프로젝트 폴더가 있는지 확인
