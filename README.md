@@ -32,7 +32,9 @@ docker stop {cotainer_id1} {cotainer_id2} ..       # 특정 컨테이너 종료
 docker rm {cotainer_id1} {cotainer_id2} ..         # 특정 컨테이너 삭제
 docker images                                      # 모든 이미지 리스트
 docker rmi {image_id1} {image_id2}                 # 특정 이미지 삭제
-docker volume prune                                # 컨테이너에서 사용중이지 않은 volumne 삭제제
+docker volume prune                                # 컨테이너에서 사용중이지 않은 volumne 삭제
+docker cp {LOCAL_PATH} {CONATINER_DIR}             # 로컬의 파일을 컨테이너로 복사
+docker inspect {container_id}                      # 컨테이너 정보 확인
 ```
 
 # ALL Docker command
@@ -50,6 +52,7 @@ docker-compose down -v    # 모든 실행중인 컨테이너 삭제 및 볼륨 �
 docker ps                 # 실행중인 컨테이너 리스트
 docker ps -a              # 종료포함 모든 컨테이너 리스트
 docker images             # 모든 이미지 리스트
+docker cp {LOCAL_PATH} {CONATINER_DIR}             # 로컬의 파일을 컨테이너로 복사
 
 docker start {container_name1} {container_name2} .. # 특정 컨테이너 시작작
 docker stop {container_name or id} # 특정 컨테이너 종료
@@ -64,7 +67,7 @@ docker rmi $(docker images -q) # 존재하는 모든 이미지 제거
 docker volume ls # 볼륨 목록 확인인
 docker volume prune # 사용하지않는 모든 볼륨 제거
 docker volume rm $(docker volumne ls -q) # 모든 볼륨 제거
-docker volume rm {volume_name} # 특정 볼륨 제거거
+docker volume rm {volume_name} # 특정 볼륨 제거
 
 docker exec -it {container_name} /bin/bash # postgresql 컨테이너는 /bin/sh
 ```
