@@ -9,8 +9,12 @@ RUN yum -y update && yum -y install \
     openssh-server \
     make \
     openssh-clients \
+    git \
     sudo && \
     yum clean all
+
+RUN sudo dnf -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+RUN sudo dnf -y install htop
 
 RUN dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
 RUN dnf update -y
