@@ -1,4 +1,4 @@
-# [Docker Engine Install](https://docs.docker.com/engine/install/ubuntu/)
+# [Docker Install](https://docs.docker.com/engine/install/ubuntu/)
 
 ## Ubuntu Install
 ```bash
@@ -57,3 +57,6 @@ sudo chmod g+rwx "$HOME/.docker" -R
 ```bash
 sudo chmod 666 /var/run/docker.sock
 ```
+
+## More detailes
+Docker 설정법에 대한 자세한 정보는 [Wiki](https://git.gcsc.io/ai/mda/Docker_setting/-/wikis/home)에서 확인할 수 있습니다
