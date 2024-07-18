@@ -8,7 +8,6 @@ RUN yum -y update && yum -y install \
     gcc \
     openssh-server \
     make \
-    openssh-clients \
     git \
     sudo && \
     yum clean all
@@ -53,11 +52,7 @@ COPY requirements.txt /app/requirements.txt
 RUN /bin/bash -c "source activate dev && \
     pip install jupyter && \
     pip install torch==1.13.1+cu117 torchvision==0.14.1+cu117 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu117 && \
-    pip install -r /app/requirements.txt \ 
-    pip install psycopg2-binary" \
-# Configure SSH
-RUN mkdir /var/run/sshd && \
-    echo 'root:Docker!' | chpasswd && \
-    ssh-keygen -A
+    pip install -r /app/requirements.txt && \ 
+    pip install psycopg2-binary" 
 
 CMD ["tail", "-f", "/dev/null"]
