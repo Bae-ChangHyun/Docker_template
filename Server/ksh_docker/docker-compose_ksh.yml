@@ -2,12 +2,15 @@ version: '3'
 
 services:
   redhat:
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: gc_redhat
     container_name: redhat_ksh
     ports:
       - "9024:9021"
     volumes:
-      - {YOUR_DIRECTORY}:/mnt
+      - {LOCAL_DIR}:{CONTAINER_DIR}    # mount project dir >> {local_dir}:{container_dir}
       - /mnt/raid/pgdata/main:/var/lib/postgresql/data    # mount postgresql data dir >> {local_dir}:{container_dir}
     environment:
     #  POSTGRES_HOST: postgres                               
