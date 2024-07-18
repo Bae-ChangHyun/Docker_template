@@ -1,6 +1,11 @@
 # Created by https://www.toptal.com/developers/gitignore/api/linux,windows,visualstudiocode,pycharm,python,jupyternotebooks
 # Edit at https://www.toptal.com/developers/gitignore?templates=linux,windows,visualstudiocode,pycharm,python,jupyternotebooks
 
+
+### BCH custom ###
+wiki.md
+
+
 ### JupyterNotebooks ###
 # gitignore template for Jupyter Notebooks
 # website: http://jupyter.org/
