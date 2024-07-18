@@ -2,6 +2,9 @@ version: '3'
 
 services:
   redhat:
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: gc_redhat
     container_name: redhat_bch
     ports:
