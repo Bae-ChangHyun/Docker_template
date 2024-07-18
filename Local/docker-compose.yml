@@ -1,0 +1,76 @@
+version: '3'
+
+services:
+  redhat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: redhat_custom
+    container_name: redhat
+    ports:
+      - "9000:9000"
+    volumes:
+      - /home/bch/WorkingDir:/home/bch/WorkingDir    # mount project dir >> {local_dir}:{container_dir}
+    networks:
+      - mynetwork
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+# redis-cli -h redis
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+    restart: always
+    networks:
+      - mynetwork
+
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    networks:
+      - mynetwork
+  # localhost:8080/pgadmin4
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin4_ct
+    environment:
+      PGADMIN_DEFAULT_EMAIL: gcai001127@gmail.com          # set pgadmin4 email
+      PGADMIN_DEFAULT_PASSWORD: gcai123!                    # set pgadmin4 pw  
+    ports:
+      - "80:80"
+    networks:
+      - mynetwork
+
+  kafka:
+    image: wurstmeister/kafka:latest
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
