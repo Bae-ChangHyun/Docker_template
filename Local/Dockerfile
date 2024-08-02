@@ -1,11 +1,14 @@
 # Base image
 FROM redhat/ubi8:latest
 
+ENV TZ Asia/Seoul
+
 # Install necessary packages
 RUN yum -y update && yum -y install \
     wget \
     bzip2 \
     gcc \
+    nano \
     openssh-server \
     make \
     git \
@@ -43,7 +46,7 @@ RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -
 RUN conda create --name mda python=3.10 -y && \
     conda clean --all --yes && \
     conda init bash && \
-    echo "source activate dev" > ~/.bashrc
+    echo "source activate mda" > ~/.bashrc
 
 # Copy requirements.txt into the container
 COPY ./requirements.txt /app/requirements.txt
