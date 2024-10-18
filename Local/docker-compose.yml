@@ -1,3 +1,4 @@
+# Install redis, zookeeper, pgadmin4, on redhat container
 version: '3'
 
 services:
@@ -5,12 +6,16 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: redhat_custom
+      args:
+       VENV_NAME: ${VENV_NAME}
+       REQUIREMENTS_PATH: ${REQUIREMENTS_PATH}
+    image: redhat/ubi8:8.6_custom
     container_name: redhat
+    privileged: true
     ports:
-      - "9000:9000"
+      - "${REDHAT_PORT}:9000"
     volumes:
-      - /home/bch/WorkingDir:/home/bch/WorkingDir    # mount project dir >> {local_dir}:{container_dir}
+      - "${MOUNT_DIR}:${MOUNT_DIR}"    # mount project dir >> {local_dir}:{container_dir}
     networks:
       - mynetwork
     deploy:
@@ -26,7 +31,7 @@ services:
     image: redis:latest
     container_name: redis
     ports:
-      - "6379:6379"
+      - "${REDIS_PORT}:6379"
     logging:
       driver: "json-file"
       options:
@@ -39,51 +44,68 @@ services:
     image: wurstmeister/zookeeper:latest
     container_name: zookeeper
     ports:
-      - "2181:2181"
-    networks:
-      - mynetwork
-  # localhost:8080/pgadmin4
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    container_name: pgadmin4_ct
-    environment:
-      PGADMIN_DEFAULT_EMAIL: gcai001127@gmail.com          # set pgadmin4 email
-      PGADMIN_DEFAULT_PASSWORD: gcai123!                    # set pgadmin4 pw  
-    ports:
-      - "80:80"
+      - "${ZOOKEEPER_PORT}:2181"
     networks:
       - mynetwork
 
+  # localhost:8080/pgadmin4
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}          # set pgadmin4 email
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}    # set pgadmin4 pw  
+    ports:
+      - "${PGADMIN_PORT}:80"
+    networks:
+      - mynetwork
   kafka:
     image: wurstmeister/kafka:latest
     container_name: kafka
     ports:
-      - "9092:9092"
+      - "${KAFKA_OUTSIDE_PORT}:9092"  
+      - "9093:9093" 
     environment:
-      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_LISTENERS: INSIDE://0.0.0.0:9093,OUTSIDE://0.0.0.0:${KAFKA_OUTSIDE_PORT}
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://kafka:9093,OUTSIDE://localhost:${KAFKA_OUTSIDE_PORT}
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     depends_on:
       - zookeeper
     networks:
       - mynetwork
-      
-  kafka-ui:
-      image: provectuslabs/kafka-ui
-      container_name: kafka-ui
-      ports:
-        - "8080:8080"
-      environment:
-        KAFKA_CLUSTERS_0_NAME: local
-        KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
-      depends_on:
-        - kafka
-      networks:
-        - mynetwork
 
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    container_name: kafka-ui
+    ports:
+      - "${KAFKA_UI_PORT}:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9093
+    depends_on:
+      - kafka
+    networks:
+      - mynetwork
+
+  # psql -h postgres -U {USERNMAE}
+  postgres:
+    image: postgres:14-alpine
+    container_name: postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}                                      
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD} 
+      PGDATA: /var/lib/postgresql/data                              
+    volumes:
+      - ${DB_MOUNT_DIR}:/var/lib/postgresql/data      
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    restart: always
+    networks:
+      - mynetwork
 
 networks:
   mynetwork:
