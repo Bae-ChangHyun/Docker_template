@@ -48,7 +48,7 @@ services:
     networks:
       - mynetwork
 
-  # localhost:8080/pgadmin4
+  # localhost:{PGADMIN_PORT}/pgadmin4
   pgadmin:
     image: dpage/pgadmin4:latest
     container_name: pgadmin4
@@ -59,6 +59,7 @@ services:
       - "${PGADMIN_PORT}:80"
     networks:
       - mynetwork
+
   kafka:
     image: wurstmeister/kafka:latest
     container_name: kafka
@@ -77,6 +78,7 @@ services:
     networks:
       - mynetwork
 
+  # localhost:{KAFKA_UI_PORT}
   kafka-ui:
     image: provectuslabs/kafka-ui
     container_name: kafka-ui
@@ -90,7 +92,7 @@ services:
     networks:
       - mynetwork
 
-  # psql -h postgres -U {USERNMAE}
+  # psql -h postgres -U {POSTGRES_USER}
   postgres:
     image: postgres:14-alpine
     container_name: postgres
